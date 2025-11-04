@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Pelota
+  - DeadZone
+  - Ladrillo
   layers:
   - Default
   - TransparentFX

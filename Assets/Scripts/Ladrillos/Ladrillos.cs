@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Ladrillos : MonoBehaviour
@@ -7,7 +7,12 @@ public class Ladrillos : MonoBehaviour
     [SerializeField] private int collisions;
     [SerializeField] private int points;
 
+   
 
+    private void Update()
+    {
+        EndLevel();
+    }
     /// <summary>
     /// destruye los ladrillos al chocar la pelota con ellos
     /// </summary>
@@ -25,6 +30,15 @@ public class Ladrillos : MonoBehaviour
             }
 
 
+        }
+    }
+
+    private void EndLevel()
+    {
+        List<GameObject> BricksLeft = GameObject.FindGameObjectsWithTag("Ladrillo").ToList();
+        if (BricksLeft.Count==0)
+        {
+            Debug.Log("Has pasado el nivel");
         }
     }
 }
