@@ -80,6 +80,6 @@ public class Movimiento : MonoBehaviour
         
         this.transform.position = newPosition; //se le aplica al tranform del objeto la nueva posicion.
 
-
+        //TO-DO. HACER QUE LA POSICION DE LA BOLA SE RESETEE EN MEDIO DE LA PALA
     }
 }

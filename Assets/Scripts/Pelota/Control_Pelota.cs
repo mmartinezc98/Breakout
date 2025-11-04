@@ -1,49 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Control_Pelota : MonoBehaviour
 {
-    private float _startVelocity = 4f;
+    [SerializeField] private Vector2 _startvelocity= new Vector2(1,1); //el serializeField sirve para modificar la variable desde unity aunque sea privada
+    [SerializeField] private float _velocity = 4f;
+
     private Rigidbody2D _rigidPelota;
     private bool _keyPush = true;
+
+    private Vector3 _initialPosition;
+    
 
     public GameObject father;
     
     
-    // Start is called before the first frame update
+    
     void Start()
     {
         _rigidPelota = GetComponent<Rigidbody2D>(); //cogemos el rigidbody de la pelota y se lo asignamos a la variable creada
+        _initialPosition=transform.position;
 
-       
+
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         startBoost();
     }
+
+
 
     /// <summary>
     /// dispara la bola al pulsar el espacio
     /// </summary>
     private void startBoost()
     {
-        
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (_keyPush) //esto seria si _keyPush es verdadero y !_keyPush es falso
         {
-            
-            _rigidPelota.velocity= transform.up * _startVelocity;
 
-            transform.parent = null; //cuando se pulsa el espacio, la bola se desvincula del padre para que no siga su movimiento
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
 
-            _keyPush = false; 
+                _rigidPelota.velocity = _startvelocity * _velocity;
+
+                transform.parent = null; //cuando se pulsa el espacio, la bola se desvincula del padre para que no siga su movimiento
+
+                _keyPush = false;
+            }
+
         }
+    }
 
-    } //TO-DO HACER QUE AL PULSAR EL ESPACIO SE DESACTIVE EL PODER VOLVER A DARLE MAS VECES
 
+    /// <summary>
+    /// cuando colisiona con la deadzone se resetea la posicion de la bola al inicio
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("DeadZone")) {
 
-    
+            _rigidPelota.velocity = Vector2.zero; //se resetea la velocidad de la bola a 0
+            transform.position = _initialPosition; //se resetea a la posision inicial
+
+            transform.SetParent(father.transform); //se vuelve a instanciar de la pala para que siga el movimiento
+            _keyPush = true; //se vuelve a activar el poder darle al espacio 
+        }
+    }
 }
