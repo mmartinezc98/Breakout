@@ -10,6 +10,7 @@ public class Control_Pelota : MonoBehaviour
     private bool _keyPush = true;
 
     private Vector3 _initialPosition;
+    private Vector3 _offset = new Vector3(0, 0.25f,0);
 
 
     public GameObject father;
@@ -66,14 +67,19 @@ public class Control_Pelota : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("DeadZone"))
         {
+            
 
             _rigidPelota.velocity = Vector2.zero; //se resetea la velocidad de la bola a 0
-            transform.position = _initialPosition; //se resetea a la posision inicial
-
+             //se resetea a la posision inicial
+            
             transform.SetParent(father.transform); //se vuelve a instanciar de la pala para que siga el movimiento
+            transform.position = father.transform.position + _offset;
+
             _keyPush = true; //se vuelve a activar el poder darle al espacio 
 
+        }    
+        
 
-        }
     }
 }
+
