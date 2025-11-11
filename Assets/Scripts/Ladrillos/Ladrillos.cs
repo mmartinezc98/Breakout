@@ -13,6 +13,8 @@ public class Ladrillos : MonoBehaviour
     {
         EndLevel();
     }
+
+
     /// <summary>
     /// destruye los ladrillos al chocar la pelota con ellos
     /// </summary>
@@ -39,6 +41,7 @@ public class Ladrillos : MonoBehaviour
         if (BricksLeft.Count==0)
         {
             Debug.Log("Has pasado el nivel");
+
         }
     }
 }
