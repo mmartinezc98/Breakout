@@ -9,6 +9,14 @@ public class Control_Pelota : MonoBehaviour
     private Rigidbody2D _rigidPelota;
     private bool _keyPush = true;
 
+    //ARREGLAR BUG PELOTA CUANDO SE MUEVE SOLO VERTICAL O SOLO HORIZONTAL
+    private float _xVelocityMin = 0.3f;
+    private float _xAdjust = 0.4f;
+
+    private float _yVelocityMin = 0.3f;
+    private float _yAjust = 0.4f;
+
+
     private Vector3 _initialPosition;
     private Vector3 _offset = new Vector3(0, 0.25f,0);
 
@@ -22,15 +30,16 @@ public class Control_Pelota : MonoBehaviour
         _rigidPelota = GetComponent<Rigidbody2D>(); //cogemos el rigidbody de la pelota y se lo asignamos a la variable creada
         _initialPosition = transform.position;
 
+        
 
     }
 
 
     void Update()
-    {
+    {     
         
-
         startBoost();
+        MovementFix();
     }
 
 
@@ -67,7 +76,7 @@ public class Control_Pelota : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("DeadZone"))
         {
-            
+            GameManager.Instance.LifeCounter();
 
             _rigidPelota.velocity = Vector2.zero; //se resetea la velocidad de la bola a 0
              //se resetea a la posision inicial
@@ -81,5 +90,34 @@ public class Control_Pelota : MonoBehaviour
         
 
     }
+
+    /// <summary>
+    /// para evitar que la pelota quede moviendose solo en el eje y
+    /// </summary>
+    private void MovementFix()
+    {
+
+        //si la velocidad en x es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
+
+        if(Mathf.Abs(_rigidPelota.velocity.x)< _xVelocityMin)
+        {
+            float direccion = Random.value < 0.5f ? -1f : 1f; // izquierda o derecha
+
+            _rigidPelota.velocity += new Vector2(_xAdjust * direccion, _rigidPelota.velocity.y).normalized * _rigidPelota.velocity.magnitude;
+
+        }
+
+        if (Mathf.Abs(_rigidPelota.velocity.y) < _yVelocityMin)
+        {
+            float direccion = Random.value < 0.5f ? -1f : 1f; // izquierda o derecha
+
+            _rigidPelota.velocity += new Vector2(_rigidPelota.velocity.x, _yAjust * direccion).normalized * _rigidPelota.velocity.magnitude;
+
+        }
+
+
+    } 
+
+
 }
 

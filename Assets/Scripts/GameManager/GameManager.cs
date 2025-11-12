@@ -2,37 +2,110 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour{
+        
+    public static GameManager Instance; //para poder llamar al game manager desde otros scripts GameManager.Instance.Metodo();
+
+    //NIVEL EN EL QUE ESTAMOS
+    //private float _nivel;
+
+    //CRONOMETRO
+    private float _time=0f; //tiempo transcurrido
     [SerializeField] private TextMeshProUGUI _cronoText; //texto del UI donde se va a mostrar el tiempo transcurrido
 
-    private float _time; //tiempo transcurrido
-    private bool _levelFinished=false; //para controlar cuando se acaba el nivel y parar el contador
+    //PUNTUACION
+    private int _score=0;
+    [SerializeField] private TextMeshProUGUI _scoreText;
 
-    // Start is called before the first frame update
+    //VIDAS
+    private int _lifes = 3;
+    [SerializeField] private TextMeshProUGUI _lifesText;
+
+
+    private void Awake()
+    {
+        // Singleton: asegura que solo haya un GameManager 
+        if (Instance != null && Instance != this) //si la instancia ya existe y es diferente a la nueva, destruye la nueva
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+    }
+
+
+   
     void Start()
     {
-        
+        StartCoroutine(TimeCounter());
     }
 
-    // Update is called once per frame
+    
     void Update()
-    {
-        if (_levelFinished) { return; } //si se acaba el nivel para de contar
+    {   
 
+       
         
-        UpdateTime();
         
     }
 
-    public void UpdateTime()
+
+    /// <summary>
+    /// corrutina del contador del tiempo
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator TimeCounter()
     {
-        _time += Time.deltaTime; //le asigna el tiempo del deltaTime transcurrido a nuestra variable de tiempo transcurrido
-        int minutes= Mathf.FloorToInt(_time)/60;
-        int seconds= Mathf.FloorToInt(_time/60);
-         _cronoText.text=$"{minutes} : {seconds}";
+    
+
+            while (true)
+            {
+                // Usa Time.deltaTime para que el contador siga el tiempo real (frame-independent)
+                _time += Time.deltaTime;
+
+                int minutos = Mathf.FloorToInt(_time / 60f);
+                int segundos = Mathf.FloorToInt(_time % 60f);
+
+                _cronoText.text = $"{minutos:00}:{segundos:00}";
+
+                // Actualiza cada frame (más preciso). Si quieres actualizar menos, usa WaitForSeconds(0.1f)
+                yield return null;
+            }           
+    }
+
+
+    /// <summary>
+    /// metodo para añadir la puntuacion al romper los bloques
+    /// </summary>
+    /// <param name="amount"></param>
+    public void AddScore(int amount)
+    {
+        _score += amount;
+
+        
+        if (_scoreText != null)
+            _scoreText.text = _score.ToString();
+    }
+
+
+    public void LifeCounter()
+    {
+        _lifes--;
+
+        _lifesText.text= _lifes.ToString();
+
+        if ( _lifes == 0 )
+        {
+            Debug.Log("Has perdido");
+
+        }
+        
+
     }
 
 

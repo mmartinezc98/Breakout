@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class Ladrillos : MonoBehaviour
 {
-    [SerializeField] private int collisions;
-    [SerializeField] private int points;
+    [SerializeField] private LadrilloData data;
 
-   
+
+    private int collisions;
+    private int points;
+     
+
+    private void Awake()
+    {
+        
+        this.collisions= data.Collisions;
+        this.points= data.Points;   
+    }
+
 
     private void Update()
     {
@@ -44,4 +54,15 @@ public class Ladrillos : MonoBehaviour
 
         }
     }
+
+    private void OnDestroy()
+    {
+        // Comprueba que el GameManager existe antes de llamar
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddScore(points);
+        }
+    }
+
+
 }

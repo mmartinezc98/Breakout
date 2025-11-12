@@ -143,5 +143,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b40c8121fc7ea24db2185e87dbc70fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisions: 3
-  points: 250
+  data: {fileID: 11400000, guid: 83b4c61398249bc47938c68d3c36b287, type: 2}
