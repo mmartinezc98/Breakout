@@ -76,7 +76,7 @@ public class Control_Pelota : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("DeadZone"))
         {
-            GameManager.Instance.LifeCounter();
+            EventManager.Instance.OnLifesChanged.Invoke();
 
             _rigidPelota.velocity = Vector2.zero; //se resetea la velocidad de la bola a 0
              //se resetea a la posision inicial
@@ -106,6 +106,8 @@ public class Control_Pelota : MonoBehaviour
             _rigidPelota.velocity += new Vector2(_xAdjust * direccion, _rigidPelota.velocity.y).normalized * _rigidPelota.velocity.magnitude;
 
         }
+
+        //si la velocidad en y es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
 
         if (Mathf.Abs(_rigidPelota.velocity.y) < _yVelocityMin)
         {

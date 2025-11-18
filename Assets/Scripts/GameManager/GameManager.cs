@@ -43,6 +43,10 @@ public class GameManager : MonoBehaviour{
     void Start()
     {
         StartCoroutine(TimeCounter());
+
+        //subcripcion al envento OnBlockDestroyed
+        EventManager.Instance.OnBlockDestroyed.AddListener(AddScore);
+        EventManager.Instance.OnLifesChanged.AddListener(LifeCounter);
     }
 
     
@@ -90,6 +94,7 @@ public class GameManager : MonoBehaviour{
         
         if (_scoreText != null)
             _scoreText.text = _score.ToString();
+        
     }
 
 

@@ -13,9 +13,11 @@ public class Ladrillos : MonoBehaviour
 
     private void Awake()
     {
-        
+                
         this.collisions= data.Collisions;
-        this.points= data.Points;   
+        this.points= data.Points;
+
+        
     }
 
 
@@ -38,7 +40,10 @@ public class Ladrillos : MonoBehaviour
 
             if (collisions == 0)
             {
+                EventManager.Instance.OnBlockDestroyed?.Invoke(this.points);
                 Destroy(gameObject);
+
+                
             }
 
 
@@ -61,6 +66,7 @@ public class Ladrillos : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.AddScore(points);
+           
         }
     }
 
