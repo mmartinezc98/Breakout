@@ -49,11 +49,14 @@ public class Control_Pelota : MonoBehaviour
     /// </summary>
     private void startBoost()
     {
+       
+
         if (_keyPush) //esto seria si _keyPush es verdadero y !_keyPush es falso
         {
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                EventManager.Instance.OnBallLaunch?.Invoke();
 
                 _rigidPelota.velocity = _startvelocity * _velocity;
 

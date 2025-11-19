@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour{
         //subcripcion al envento OnBlockDestroyed
         EventManager.Instance.OnBlockDestroyed.AddListener(AddScore);
         EventManager.Instance.OnLifesChanged.AddListener(LifeCounter);
+        //EventManager.Instance.OnBallLaunch.AddListener(TimeCounter);
     }
 
     
@@ -66,7 +67,6 @@ public class GameManager : MonoBehaviour{
     IEnumerator TimeCounter()
     {
     
-
             while (true)
             {
                 // Usa Time.deltaTime para que el contador siga el tiempo real (frame-independent)
