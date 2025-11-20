@@ -23,7 +23,7 @@ public class Ladrillos : MonoBehaviour
 
     private void Update()
     {
-        EndLevel();
+      
     }
 
 
@@ -40,9 +40,10 @@ public class Ladrillos : MonoBehaviour
 
             if (collisions == 0)
             {
-                EventManager.Instance.OnBlockDestroyed?.Invoke(this.points);
-                Destroy(gameObject);
+                EventManager.Instance.OnBlockDestroyed?.Invoke();
+                GameManager.Instance.AddScore(this.points);
 
+                Destroy(gameObject);
                 
             }
 
@@ -50,25 +51,8 @@ public class Ladrillos : MonoBehaviour
         }
     }
 
-    private void EndLevel()
-    {
-        List<GameObject> BricksLeft = GameObject.FindGameObjectsWithTag("Ladrillo").ToList();
-        if (BricksLeft.Count==0)
-        {
-            Debug.Log("Has pasado el nivel");
+    
 
-        }
-    }
-
-    private void OnDestroy()
-    {
-        // Comprueba que el GameManager existe antes de llamar
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.AddScore(points);
-           
-        }
-    }
-
+    
 
 }

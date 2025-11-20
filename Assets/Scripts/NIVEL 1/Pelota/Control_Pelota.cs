@@ -4,17 +4,14 @@ using UnityEngine;
 public class Control_Pelota : MonoBehaviour
 {
     [SerializeField] private Vector2 _startvelocity = new Vector2(1, 1); //el serializeField sirve para modificar la variable desde unity aunque sea privada
-    [SerializeField] private float _velocity = 4f;
+    [SerializeField] private float _velocity = 5f;
 
     private Rigidbody2D _rigidPelota;
     private bool _keyPush = true;
 
-    //ARREGLAR BUG PELOTA CUANDO SE MUEVE SOLO VERTICAL O SOLO HORIZONTAL
-    private float _xVelocityMin = 0.3f;
-    private float _xAdjust = 0.4f;
+  
+    
 
-    private float _yVelocityMin = 0.3f;
-    private float _yAjust = 0.4f;
 
 
     private Vector3 _initialPosition;
@@ -58,7 +55,7 @@ public class Control_Pelota : MonoBehaviour
             {
                 EventManager.Instance.OnBallLaunch?.Invoke();
 
-                _rigidPelota.velocity = _startvelocity * _velocity;
+                _rigidPelota.velocity = (_startvelocity.normalized * _velocity);
 
                 transform.parent = null; //cuando se pulsa el espacio, la bola se desvincula del padre para que no siga su movimiento
 
@@ -99,28 +96,32 @@ public class Control_Pelota : MonoBehaviour
     /// </summary>
     private void MovementFix()
     {
-
-        //si la velocidad en x es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
-
-        if(Mathf.Abs(_rigidPelota.velocity.x)< _xVelocityMin)
+        
+        float _VelocityMin = 0.3f;
+        float _Adjust = 0.4f;
+        if (_keyPush==false)
         {
-            float direccion = Random.value < 0.5f ? -1f : 1f; // izquierda o derecha
+            //si la velocidad en x es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
 
-            _rigidPelota.velocity += new Vector2(_xAdjust * direccion, _rigidPelota.velocity.y).normalized * _rigidPelota.velocity.magnitude;
+            if (Mathf.Abs(_rigidPelota.velocity.x) < _VelocityMin)
+            {
+                float direccion = Random.value < 0.5f ? -1f : 1f; // izquierda o derecha
+
+                _rigidPelota.velocity += new Vector2(_Adjust, 0f);
+
+            }
+
+            //si la velocidad en y es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
+
+            if (Mathf.Abs(_rigidPelota.velocity.y) < _VelocityMin)
+            {
+                float direccion = Random.value < 0.5f ? -1f : 1f; // izquierda o derecha
+
+                _rigidPelota.velocity += new Vector2(0f, _Adjust);
+
+            }
 
         }
-
-        //si la velocidad en y es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
-
-        if (Mathf.Abs(_rigidPelota.velocity.y) < _yVelocityMin)
-        {
-            float direccion = Random.value < 0.5f ? -1f : 1f; // izquierda o derecha
-
-            _rigidPelota.velocity += new Vector2(_rigidPelota.velocity.x, _yAjust * direccion).normalized * _rigidPelota.velocity.magnitude;
-
-        }
-
-
     } 
 
 

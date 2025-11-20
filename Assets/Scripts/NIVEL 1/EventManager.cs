@@ -22,10 +22,11 @@ public class EventManager : MonoBehaviour
     }
 
     //CREACION DE LOS EVENTOS
-    public UnityEvent<int> OnBlockDestroyed;
+    public UnityEvent OnBlockDestroyed;
     public UnityEvent OnLifesChanged;
     public UnityEvent OnBallLaunch;
-
+    public UnityEvent OnBlocksFinished;
+    
    
 
 }
