@@ -4,27 +4,26 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour{
-        
+public class GameManager : MonoBehaviour
+{
+
     public static GameManager Instance; //para poder llamar al game manager desde otros scripts GameManager.Instance.Metodo();
 
     private int _blocksNumber = 21;
 
-    
-     
+
+
 
     //NIVEL EN EL QUE ESTAMOS
     //private float _nivel;
 
     //CRONOMETRO
-    private float _time=0f; //tiempo transcurrido
+    private float _time = 0f; //tiempo transcurrido
     [SerializeField] private TextMeshProUGUI _cronoText; //texto del UI donde se va a mostrar el tiempo transcurrido
 
     //PUNTUACION
-    private int _score=0;
+    private int _score = 0;
     [SerializeField] private TextMeshProUGUI _scoreText;
 
     //VIDAS
@@ -35,23 +34,27 @@ public class GameManager : MonoBehaviour{
     private void Awake()
     {
         // Singleton: asegura que solo haya un GameManager 
-       /* if (Instance != null && Instance != this) //si la instancia ya existe y es diferente a la nueva, destruye la nueva
-        {
-            Destroy(this.gameObject);
-            return;
-        }*/
+        /* if (Instance != null && Instance != this) //si la instancia ya existe y es diferente a la nueva, destruye la nueva
+         {
+             Destroy(this.gameObject);
+             return;
+         }
+         else
+         {
+
+            // DontDestroyOnLoad(gameObject);
+         }*/
         Instance = this;
-        //DontDestroyOnLoad(gameObject);
 
     }
 
 
-   
+
     void Start()
     {
-        
+
         //subcripcion al envento OnBlockDestroyed
-        
+
         EventManager.Instance.OnLifesChanged.AddListener(LifeCounter);
         EventManager.Instance.OnBlockDestroyed.AddListener(BlocksManager);
         EventManager.Instance.OnBallLaunch.AddListener(StartCounter);
@@ -62,13 +65,13 @@ public class GameManager : MonoBehaviour{
         //EventManager.Instance.OnBallLaunch.AddListener(TimeCounter);
     }
 
-    
-    void Update()
-    {   
 
-       
-        
-        
+    void Update()
+    {
+
+
+
+
     }
 
 
@@ -77,20 +80,20 @@ public class GameManager : MonoBehaviour{
     /// </summary>
     /// <returns></returns>
     IEnumerator TimeCounter()
-    {    
-            while (true)
-            {
-                // Usa Time.deltaTime para que el contador siga el tiempo real (frame-independent)
-                _time += Time.deltaTime;
+    {
+        while (true)
+        {
+            // Usa Time.deltaTime para que el contador siga el tiempo real (frame-independent)
+            _time += Time.deltaTime;
 
-                int minutos = Mathf.FloorToInt(_time / 60f);
-                int segundos = Mathf.FloorToInt(_time % 60f);
+            int minutos = Mathf.FloorToInt(_time / 60f);
+            int segundos = Mathf.FloorToInt(_time % 60f);
 
-                _cronoText.text = $"{minutos:00}:{segundos:00}";
+            _cronoText.text = $"{minutos:00}:{segundos:00}";
 
-                // Actualiza cada frame (más preciso). Si quieres actualizar menos, usa WaitForSeconds(0.1f)
-                yield return null;
-            }           
+            // Actualiza cada frame (más preciso). Si quieres actualizar menos, usa WaitForSeconds(0.1f)
+            yield return null;
+        }
     }
 
 
@@ -112,12 +115,12 @@ public class GameManager : MonoBehaviour{
     {
         _score += amount;
 
-        
+
         if (_scoreText != null)
             _scoreText.text = _score.ToString();
 
-              
-        
+
+
     }
 
     /// <summary>
@@ -127,16 +130,16 @@ public class GameManager : MonoBehaviour{
     {
         _lifes--;
 
-        _lifesText.text= _lifes.ToString();
+        _lifesText.text = _lifes.ToString();
 
-        if ( _lifes == 0 )
+        if (_lifes == 0)
         {
             GameOver.Instance.GameOverScreen();
 
             ScoreManager.Instance.AddRecord(_score, _time);
 
         }
-        
+
 
     }
 
@@ -161,8 +164,8 @@ public class GameManager : MonoBehaviour{
     private void EndLevel()
     {
         SceneManager.LoadScene("Pantalla 2");
-        
+
     }
 
-    
+
 }

@@ -1,6 +1,3 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,7 +8,7 @@ public class EventManager : MonoBehaviour
     public static EventManager Instance;
     private void Awake()
     {
-        
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -26,7 +23,7 @@ public class EventManager : MonoBehaviour
     public UnityEvent OnLifesChanged;
     public UnityEvent OnBallLaunch;
     public UnityEvent OnBlocksFinished;
-    
-   
+
+
 
 }

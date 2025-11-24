@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Ladrillos : MonoBehaviour
@@ -9,21 +7,21 @@ public class Ladrillos : MonoBehaviour
 
     private int collisions;
     private int points;
-     
+
 
     private void Awake()
     {
-                
-        this.collisions= data.Collisions;
-        this.points= data.Points;
 
-        
+        this.collisions = data.Collisions;
+        this.points = data.Points;
+
+
     }
 
 
     private void Update()
     {
-      
+
     }
 
 
@@ -44,15 +42,15 @@ public class Ladrillos : MonoBehaviour
                 GameManager.Instance.AddScore(this.points);
 
                 Destroy(gameObject);
-                
+
             }
 
 
         }
     }
 
-    
 
-    
+
+
 
 }

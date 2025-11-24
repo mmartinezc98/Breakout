@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -73,7 +72,7 @@ public class ScoreManager : MonoBehaviour
 
     private void TrimList()
     {
-        
+
         if (Scores.Count > _maxRegisters)
             Scores.RemoveRange(_maxRegisters, Scores.Count - _maxRegisters);
 

@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Control_Pelota : MonoBehaviour
@@ -9,13 +8,13 @@ public class Control_Pelota : MonoBehaviour
     private Rigidbody2D _rigidPelota;
     private bool _keyPush = true;
 
-  
-    
+
+
 
 
 
     private Vector3 _initialPosition;
-    private Vector3 _offset = new Vector3(0, 0.25f,0);
+    private Vector3 _offset = new Vector3(0, 0.25f, 0);
 
 
     public GameObject father;
@@ -27,14 +26,14 @@ public class Control_Pelota : MonoBehaviour
         _rigidPelota = GetComponent<Rigidbody2D>(); //cogemos el rigidbody de la pelota y se lo asignamos a la variable creada
         _initialPosition = transform.position;
 
-        
+
 
     }
 
 
     void Update()
-    {     
-        
+    {
+
         startBoost();
         MovementFix();
     }
@@ -46,7 +45,7 @@ public class Control_Pelota : MonoBehaviour
     /// </summary>
     private void startBoost()
     {
-       
+
 
         if (_keyPush) //esto seria si _keyPush es verdadero y !_keyPush es falso
         {
@@ -79,15 +78,15 @@ public class Control_Pelota : MonoBehaviour
             EventManager.Instance.OnLifesChanged.Invoke();
 
             _rigidPelota.velocity = Vector2.zero; //se resetea la velocidad de la bola a 0
-             //se resetea a la posision inicial
-            
+                                                  //se resetea a la posision inicial
+
             transform.SetParent(father.transform); //se vuelve a instanciar de la pala para que siga el movimiento
             transform.position = father.transform.position + _offset;
 
             _keyPush = true; //se vuelve a activar el poder darle al espacio 
 
-        }    
-        
+        }
+
 
     }
 
@@ -96,10 +95,10 @@ public class Control_Pelota : MonoBehaviour
     /// </summary>
     private void MovementFix()
     {
-        
+
         float _VelocityMin = 0.3f;
         float _Adjust = 0.4f;
-        if (_keyPush==false)
+        if (_keyPush == false)
         {
             //si la velocidad en x es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
 
@@ -122,7 +121,7 @@ public class Control_Pelota : MonoBehaviour
             }
 
         }
-    } 
+    }
 
 
 }

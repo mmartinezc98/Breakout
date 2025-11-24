@@ -78,7 +78,7 @@ public class Movimiento : MonoBehaviour
 
         this.transform.position = newPosition; //se le aplica al tranform del objeto la nueva posicion.
 
-        
+
     }
 
 
