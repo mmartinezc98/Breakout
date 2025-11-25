@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance; //para poder llamar al game manager desde otros scripts GameManager.Instance.Metodo();
 
     private int _blocksNumber = 21;
+    
 
 
 
@@ -25,10 +26,12 @@ public class GameManager : MonoBehaviour
     //PUNTUACION
     private int _score = 0;
     [SerializeField] private TextMeshProUGUI _scoreText;
+    public int Score => _score;
 
     //VIDAS
     private int _lifes = 3;
     [SerializeField] private TextMeshProUGUI _lifesText;
+    public int Lifes=> _lifes;
 
 
     private void Awake()
@@ -41,11 +44,11 @@ public class GameManager : MonoBehaviour
          }
          else
          {
-
-            // DontDestroyOnLoad(gameObject);
+           
+            DontDestroyOnLoad(gameObject);
          }*/
-        Instance = this;
 
+        Instance = this;
     }
 
 
@@ -115,9 +118,9 @@ public class GameManager : MonoBehaviour
     {
         _score += amount;
 
-
-        if (_scoreText != null)
-            _scoreText.text = _score.ToString();
+        EventManager.Instance.OnBlockDestroyed?.Invoke();
+        //if (_scoreText != null)
+        //    _scoreText.text = _score.ToString();
 
 
 
@@ -161,9 +164,11 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// cambio de nivel
     /// </summary>
-    private void EndLevel()
+    public void EndLevel()
     {
-        SceneManager.LoadScene("Pantalla 2");
+     int _levelIndex = SceneManager.GetActiveScene().buildIndex;
+
+        SceneManager.LoadScene(_levelIndex +1);
 
     }
 

@@ -38,7 +38,7 @@ public class Ladrillos : MonoBehaviour
 
             if (collisions == 0)
             {
-                EventManager.Instance.OnBlockDestroyed?.Invoke();
+                //EventManager.Instance.OnBlockDestroyed?.Invoke();
                 GameManager.Instance.AddScore(this.points);
 
                 Destroy(gameObject);

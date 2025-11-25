@@ -28,6 +28,7 @@ public class GameOver : MonoBehaviour
         for (int i = 0; i < ScoreManager.Instance.Scores.Count; i++)
         {
             _scoreboardText.text += $"{i + 1}. Puntos: {ScoreManager.Instance.Scores[i]}    Tiempo: {ScoreManager.Instance.Times[i]:0.0} \n";
+            Debug.Log("Puntuacion");
         }
 
     }

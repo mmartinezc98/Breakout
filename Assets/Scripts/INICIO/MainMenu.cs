@@ -9,7 +9,8 @@ public class MainMenu : MonoBehaviour
 
     public void Jugar()
     {
-        SceneManager.LoadScene("Pantalla 1");
+        GameManager.Instance.EndLevel();
+        
 
     }
     public void AbrirControles()
