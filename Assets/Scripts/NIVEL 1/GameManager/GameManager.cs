@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance; //para poder llamar al game manager desde otros scripts GameManager.Instance.Metodo();
 
     private int _blocksNumber = 21;
-    
+
 
 
 
@@ -21,34 +20,36 @@ public class GameManager : MonoBehaviour
 
     //CRONOMETRO
     private float _time = 0f; //tiempo transcurrido
-    [SerializeField] private TextMeshProUGUI _cronoText; //texto del UI donde se va a mostrar el tiempo transcurrido
+
+    public float Crono => _time;
+
 
     //PUNTUACION
     private int _score = 0;
-    [SerializeField] private TextMeshProUGUI _scoreText;
+
     public int Score => _score;
 
     //VIDAS
     private int _lifes = 3;
-    [SerializeField] private TextMeshProUGUI _lifesText;
-    public int Lifes=> _lifes;
+
+    public int Lifes => _lifes;
 
 
     private void Awake()
     {
         // Singleton: asegura que solo haya un GameManager 
-        /* if (Instance != null && Instance != this) //si la instancia ya existe y es diferente a la nueva, destruye la nueva
+         if (Instance != null && Instance != this) //si la instancia ya existe y es diferente a la nueva, destruye la nueva
          {
              Destroy(this.gameObject);
              return;
          }
          else
          {
-           
+            Instance = this;
             DontDestroyOnLoad(gameObject);
-         }*/
+         }
 
-        Instance = this;
+        
     }
 
 
@@ -58,14 +59,14 @@ public class GameManager : MonoBehaviour
 
         //subcripcion al envento OnBlockDestroyed
 
-        EventManager.Instance.OnLifesChanged.AddListener(LifeCounter);
+        //EventManager.Instance.OnLifesChanged.AddListener(LifeCounter);
         EventManager.Instance.OnBlockDestroyed.AddListener(BlocksManager);
         EventManager.Instance.OnBallLaunch.AddListener(StartCounter);
 
         List<GameObject> BricksLeft = GameObject.FindGameObjectsWithTag("Ladrillo").ToList();
         _blocksNumber = BricksLeft.Count;
 
-        //EventManager.Instance.OnBallLaunch.AddListener(TimeCounter);
+
     }
 
 
@@ -86,14 +87,10 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
+
             // Usa Time.deltaTime para que el contador siga el tiempo real (frame-independent)
             _time += Time.deltaTime;
-
-            int minutos = Mathf.FloorToInt(_time / 60f);
-            int segundos = Mathf.FloorToInt(_time % 60f);
-
-            _cronoText.text = $"{minutos:00}:{segundos:00}";
-
+            EventManager.Instance.OnCronoStart?.Invoke();
             // Actualiza cada frame (más preciso). Si quieres actualizar menos, usa WaitForSeconds(0.1f)
             yield return null;
         }
@@ -105,6 +102,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartCounter()
     {
+
+
         StartCoroutine(TimeCounter());
         EventManager.Instance.OnBallLaunch.RemoveListener(StartCounter);
     }
@@ -131,9 +130,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void LifeCounter()
     {
-        _lifes--;
 
-        _lifesText.text = _lifes.ToString();
+        _lifes--;
+        EventManager.Instance.OnLifesChanged.Invoke();
 
         if (_lifes == 0)
         {
@@ -142,8 +141,6 @@ public class GameManager : MonoBehaviour
             ScoreManager.Instance.AddRecord(_score, _time);
 
         }
-
-
     }
 
     /// <summary>
@@ -166,9 +163,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndLevel()
     {
-     int _levelIndex = SceneManager.GetActiveScene().buildIndex;
+        int _levelIndex = SceneManager.GetActiveScene().buildIndex;
 
-        SceneManager.LoadScene(_levelIndex +1);
+        SceneManager.LoadScene(_levelIndex + 1);
 
     }
 

@@ -22,7 +22,8 @@ public class EventManager : MonoBehaviour
     public UnityEvent OnBlockDestroyed;
     public UnityEvent OnLifesChanged;
     public UnityEvent OnBallLaunch;
-    
+    public UnityEvent OnCronoStart;
+
 
 
 

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class MainMenu : MonoBehaviour
     public void Jugar()
     {
         GameManager.Instance.EndLevel();
-        
+
 
     }
     public void AbrirControles()
