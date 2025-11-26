@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,9 +10,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance; //para poder llamar al game manager desde otros scripts GameManager.Instance.Metodo();
 
-    private int _blocksNumber = 21;
-
-
+    private int _blocksNumber ;
 
 
 
@@ -34,6 +33,10 @@ public class GameManager : MonoBehaviour
 
     public int Lifes => _lifes;
 
+    //NIVEL
+    private int _level = 1;
+    public int Level => _level;
+
 
     private void Awake()
     {
@@ -48,11 +51,21 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
          }
+         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        
     }
 
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
 
+        GameManager.Instance.BlockReset();
+        if(scene.name != "Pantalla Inicio")
+        {
+            EventManager.Instance.OnBallLaunch.AddListener(StartCounter);
+
+
+        }
+    }
 
     void Start()
     {
@@ -61,7 +74,7 @@ public class GameManager : MonoBehaviour
 
         //EventManager.Instance.OnLifesChanged.AddListener(LifeCounter);
         EventManager.Instance.OnBlockDestroyed.AddListener(BlocksManager);
-        EventManager.Instance.OnBallLaunch.AddListener(StartCounter);
+       
 
         List<GameObject> BricksLeft = GameObject.FindGameObjectsWithTag("Ladrillo").ToList();
         _blocksNumber = BricksLeft.Count;
@@ -150,8 +163,11 @@ public class GameManager : MonoBehaviour
     {
         _blocksNumber--;
 
-        if (_blocksNumber == 0)
+        Debug.Log("bloques restantes:" + _blocksNumber);
+
+        if (_blocksNumber <= 0)
         {
+            Debug.Log("bloques rotos");
             EndLevel();
 
         }
@@ -163,11 +179,35 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndLevel()
     {
+       
         int _levelIndex = SceneManager.GetActiveScene().buildIndex;
 
         SceneManager.LoadScene(_levelIndex + 1);
+        BlockReset();
 
     }
+    public void BlockReset()
+    {
+        List<GameObject> BricksLeft = GameObject.FindGameObjectsWithTag("Ladrillo").ToList();
+        _blocksNumber = BricksLeft.Count;
+
+    }
+    
+    public void ResetGameValues()
+    {
+       
+        BlockReset();
+        _level = 1;
+        _time = 0f;
+        _lifes = 3;
+        _score = 0;
+        
+    }
+   
+     
+    
+
+
 
 
 }

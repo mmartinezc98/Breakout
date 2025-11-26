@@ -18,6 +18,7 @@ public class WinnerManager : MonoBehaviour
 
     public void ReturnMainMenu()
     {
-        SceneManager.LoadScene("Pantalla Inicio");
+       
+        SceneManager.LoadScene(0);
     }
 }

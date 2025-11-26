@@ -10,6 +10,9 @@ public class TimeController : MonoBehaviour
     {
         this.text = GetComponent<TextMeshProUGUI>();
         EventManager.Instance.OnCronoStart.AddListener(UpdateTime);
+       
+
+
         UpdateTime();
     }
 
