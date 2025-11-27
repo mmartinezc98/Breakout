@@ -35,7 +35,7 @@ public class Control_Pelota : MonoBehaviour
     {
 
         startBoost();
-        MovementFix();
+       
     }
 
 
@@ -91,6 +91,45 @@ public class Control_Pelota : MonoBehaviour
 
     }
 
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+        if (collision.collider.CompareTag("Pala"))
+        {
+            //metodo para hacer que rebote la bola dependiendo de en que parte de la pala/player choque
+            // Punto de colisión real
+            Vector2 punto = collision.GetContact(0).point;
+
+            // Centro de la pala
+            Vector2 centroPala = collision.collider.bounds.center;
+
+            // Desplazamiento del impacto respecto al centro (negativo = izquierda, positivo = derecha)
+            float offsetX = punto.x - centroPala.x;
+
+            // Normalizamos para obtener un valor entre -1 y 1
+            float mitadAncho = collision.collider.bounds.size.x / 2f;
+            float factor = offsetX / mitadAncho; // -1 = izquierda, 0 = centro, 1 = derecha
+
+            // Control del ángulo horizontal. Multiplica para aumentar inclinación máxima.
+            float bounceX = factor * 1.5f;
+
+            // Dirección final del rebote
+            Vector2 nuevaDireccion = new Vector2(bounceX, 1f).normalized;
+
+            // Asignamos velocidad manteniendo tu velocidad base
+            _rigidPelota.velocity = nuevaDireccion * _velocity;
+        }
+
+        MovementFix();
+
+    }
+
+
+
+
+
+
     /// <summary>
     /// para evitar que la pelota quede moviendose solo en el eje y
     /// </summary>
@@ -103,9 +142,9 @@ public class Control_Pelota : MonoBehaviour
         {
             //si la velocidad en x es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
 
-            if (Mathf.Abs(_rigidPelota.velocity.x) < _VelocityMin)
+            if (Mathf.Abs(_rigidPelota.velocity.x) <= _VelocityMin)
             {
-                float direccion = Random.value < 0.5f ? -1f : 1f; // izquierda o derecha
+                _Adjust = Random.value < 0.5f ? -_Adjust : _Adjust; // izquierda o derecha
 
                 _rigidPelota.velocity += new Vector2(_Adjust, 0f);
 
@@ -113,9 +152,9 @@ public class Control_Pelota : MonoBehaviour
 
             //si la velocidad en y es menor que el minimo asignado arriba, da un impulso haca la izquierda o derecha
 
-            if (Mathf.Abs(_rigidPelota.velocity.y) < _VelocityMin)
+            if (Mathf.Abs(_rigidPelota.velocity.y) <= _VelocityMin)
             {
-                float direccion = Random.value < 0.5f ? -1f : 1f; // izquierda o derecha
+                _Adjust = Random.value < 0.5f ? -_Adjust : _Adjust; // izquierda o derecha
 
                 _rigidPelota.velocity += new Vector2(0f, _Adjust);
 

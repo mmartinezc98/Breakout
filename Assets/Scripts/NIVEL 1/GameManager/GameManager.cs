@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
     private int _level = 1;
     public int Level => _level;
 
+    //VARIABLE PARA LANZAR LA CORRUTINA
+    private Coroutine _activeCoroutine;
+
 
     private void Awake()
     {
@@ -61,9 +64,7 @@ public class GameManager : MonoBehaviour
         GameManager.Instance.BlockReset();
         if(scene.name != "Pantalla Inicio")
         {
-            EventManager.Instance.OnBallLaunch.AddListener(StartCounter);
-
-
+            EventManager.Instance.OnBallLaunch.AddListener(LaunchCorutine);
         }
     }
 
@@ -91,6 +92,17 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// comprueba que no haya corroutina antes de lanzarla
+    /// </summary>
+    public void LaunchCorutine()
+    {
+        if (_activeCoroutine == null)
+        {
+            EventManager.Instance.OnBallLaunch.RemoveListener(LaunchCorutine);
+            _activeCoroutine = StartCoroutine(TimeCounter());
+        }
+    }
 
     /// <summary>
     /// corrutina del contador del tiempo
@@ -106,21 +118,14 @@ public class GameManager : MonoBehaviour
             EventManager.Instance.OnCronoStart?.Invoke();
             // Actualiza cada frame (más preciso). Si quieres actualizar menos, usa WaitForSeconds(0.1f)
             yield return null;
+
+            
         }
     }
 
 
-    /// <summary>
-    /// metodo para iniciar la corrutina del contador
-    /// </summary>
-    public void StartCounter()
-    {
 
-
-        StartCoroutine(TimeCounter());
-        EventManager.Instance.OnBallLaunch.RemoveListener(StartCounter);
-    }
-
+   
 
     /// <summary>
     /// metodo para añadir la puntuacion al romper los bloques
