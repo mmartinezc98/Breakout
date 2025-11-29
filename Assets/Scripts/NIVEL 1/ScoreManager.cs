@@ -64,6 +64,7 @@ public class ScoreManager : MonoBehaviour
         }
 
     }
+
     public void AddRecord(int score, float time)
     {
         InsertRecord(score, time);

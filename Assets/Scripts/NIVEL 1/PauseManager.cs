@@ -17,8 +17,6 @@ public class PauseManager : MonoBehaviour
     void Update()
     {
         PausarJuego();
-
-
     }
 
 

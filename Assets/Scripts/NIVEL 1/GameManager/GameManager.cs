@@ -113,10 +113,10 @@ public class GameManager : MonoBehaviour
         while (true)
         {
 
-            // Usa Time.deltaTime para que el contador siga el tiempo real (frame-independent)
+            // Usa Time.deltaTime para que el contador siga el tiempo real 
             _time += Time.deltaTime;
             EventManager.Instance.OnCronoStart?.Invoke();
-            // Actualiza cada frame (más preciso). Si quieres actualizar menos, usa WaitForSeconds(0.1f)
+          
             yield return null;
 
             
@@ -136,8 +136,7 @@ public class GameManager : MonoBehaviour
         _score += amount;
 
         EventManager.Instance.OnBlockDestroyed?.Invoke();
-        //if (_scoreText != null)
-        //    _scoreText.text = _score.ToString();
+      
 
 
 
@@ -191,6 +190,7 @@ public class GameManager : MonoBehaviour
         BlockReset();
 
     }
+
     public void BlockReset()
     {
         List<GameObject> BricksLeft = GameObject.FindGameObjectsWithTag("Ladrillo").ToList();

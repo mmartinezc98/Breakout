@@ -5,7 +5,6 @@ public class TimeController : MonoBehaviour
 {
     TextMeshProUGUI text;
 
-    // Start is called before the first frame update
     void Start()
     {
         this.text = GetComponent<TextMeshProUGUI>();
@@ -16,11 +15,6 @@ public class TimeController : MonoBehaviour
         UpdateTime();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
 
     public void UpdateTime()
